@@ -103,10 +103,11 @@
         if (!session) return;
         const prompt = document.getElementById('prompt').value.trim();
         if (!prompt) return;
-        const response = document.getElementById('response');
-        const sendBtn = document.getElementById('send');
 
+        const sendBtn = document.getElementById('send');
         sendBtn.disabled = true;
+
+        const response = document.getElementById('response');
         response.textContent = 'Processing...';
 
         try {
