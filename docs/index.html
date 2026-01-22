@@ -3,10 +3,59 @@
   <head>
     <meta charset="UTF-8">
     <title>gemini-nano-example</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      #status {
+        margin: 20px 0;
+        color: #666;
+      }
+
+      #prompt {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+
+      button {
+        margin-top: 10px;
+        padding: 5px 5px;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
+      #response {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 5px;
+        white-space: pre-wrap;
+      }
+    </style>
   </head>
   <body>
     <h1>gemini-nano-example</h1>
+    <div id="status">Checking...</div>
+    <button id="init-model" style="display: none;">Initialize the model</button>
+    <textarea id="prompt" rows="3" placeholder="Input here"></textarea>
+    <button id="send">Send</button>
+    <div id="response"></div>
     <script>
+      async function createSession() {}
+
+      async function init() {}
+
+      init();
     </script>
   </body>
 </html>
