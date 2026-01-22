@@ -110,8 +110,11 @@
         response.textContent = 'Processing...';
 
         try {
-          const result = await session.prompt(prompt);
-          response.textContent = result;
+          // prompt (non-streaming)
+          // const result = await session.prompt(prompt);
+          // response.textContent = result;
+
+          // promptStreaming
         } catch (e) {
           response.textContent = `${e.message}`;
         } finally {
