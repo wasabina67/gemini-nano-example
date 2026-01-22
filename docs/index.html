@@ -17,7 +17,7 @@
 
       button {
         margin-top: 10px;
-        padding: 5px 5px;
+        padding: 5px;
         font-size: 0.8rem;
         cursor: pointer;
       }
@@ -78,26 +78,31 @@
       }
 
       async function init() {
-        const availability = await LanguageModel.availability({
-          expectedInputs: [{ type: 'text', languages: ['en'] }],
-          expectedOutputs: [{ type: 'text', languages: ['en'] }],
-        });
+        try {
+          const availability = await LanguageModel.availability({
+            expectedInputs: [{ type: 'text', languages: ['en'] }],
+            expectedOutputs: [{ type: 'text', languages: ['en'] }],
+          });
 
-        if (availability === 'unavailable') {
-          status.textContent = 'Gemini Nano is not available';
-          return;
-        } else if (availability === 'available') {
-          await createSession();
-        } else {
-          status.textContent = 'Model download required';
-          initModel.style.display = 'inline';
-          initModel.onclick = createSession;
+          if (availability === 'unavailable') {
+            status.textContent = 'Gemini Nano is not available';
+            return;
+          } else if (availability === 'available') {
+            await createSession();
+          } else {
+            status.textContent = 'Model download required';
+            initModel.style.display = 'inline';
+            initModel.onclick = createSession;
+          }
+        } catch (e) {
+          status.textContent = `${e.message}`;
         }
       }
 
-      document.getElementById('send').onclick = async () => {
+      async function sendPrompt() {
         if (!session) return;
-        const prompt = document.getElementById('prompt').value;
+        const prompt = document.getElementById('prompt').value.trim();
+        if (!prompt) return;
         const response = document.getElementById('response');
         const sendBtn = document.getElementById('send');
 
@@ -111,6 +116,14 @@
           response.textContent = `${e.message}`;
         } finally {
           sendBtn.disabled = false;
+        }
+      }
+
+      document.getElementById('send').onclick = sendPrompt;
+      document.getElementById('prompt').onkeydown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendPrompt();
         }
       };
 
