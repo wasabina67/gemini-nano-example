@@ -44,12 +44,14 @@
     </style>
   </head>
   <body>
-    <h1>gemini-nano-example</h1>
-    <div id="status">Checking...</div>
-    <button id="init-model" style="display: none;">Initialize the model</button>
-    <textarea id="prompt" rows="3" placeholder="Input here"></textarea>
-    <button id="send">Send</button>
-    <div id="response"></div>
+    <div>
+      <h1>gemini-nano-example</h1>
+      <div id="status">Checking...</div>
+      <button id="init-model" style="display: none;">Initialize the model</button>
+      <textarea id="prompt" rows="3" placeholder="Input here"></textarea>
+      <button id="send">Send</button>
+      <div id="response"></div>
+    </div>
     <script>
       const status = document.getElementById('status');
       const initModel = document.getElementById('init-model');
@@ -75,7 +77,23 @@
         }
       }
 
-      async function init() {}
+      async function init() {
+        const availability = await LanguageModel.availability({
+          expectedInputs: [{ type: 'text', languages: ['en'] }],
+          expectedOutputs: [{ type: 'text', languages: ['en'] }],
+        });
+
+        if (availability === 'unavailable') {
+          status.textContent = 'Gemini Nano is not available';
+          return;
+        } else if (availability === 'available') {
+          await createSession();
+        } else {
+          status.textContent = 'Model download required';
+          initModel.style.display = 'inline';
+          initModel.onclick = createSession;
+        }
+      }
 
       init();
     </script>
