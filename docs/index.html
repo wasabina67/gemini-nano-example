@@ -15,6 +15,13 @@
         font-size: 1.5rem;
       }
 
+      button {
+        margin-top: 10px;
+        padding: 5px 5px;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
       #status {
         margin: 20px 0;
         color: #666;
@@ -25,13 +32,6 @@
         padding: 10px;
         font-size: 1rem;
         box-sizing: border-box;
-      }
-
-      button {
-        margin-top: 10px;
-        padding: 5px 5px;
-        font-size: 0.8rem;
-        cursor: pointer;
       }
 
       #response {
@@ -51,7 +51,29 @@
     <button id="send">Send</button>
     <div id="response"></div>
     <script>
-      async function createSession() {}
+      const status = document.getElementById('status');
+      const initModel = document.getElementById('init-model');
+      let session = null;
+
+      async function createSession() {
+        status.textContent = 'Initializing model...';
+
+        try {
+          session = await LanguageModel.create({
+            expectedInputs: [{ type: 'text', languages: ['en'] }],
+            expectedOutputs: [{ type: 'text', languages: ['en'] }],
+            monitor(m) {
+              m.addEventListener('downloadprogress', (e) => {
+                status.textContent = `Downloading now: ${Math.round(e.loaded * 100)}%`;
+              });
+            },
+          });
+          status.textContent = 'Ready';
+        } catch (e) {
+          status.textContent = `${e.message}`;
+          initModel.style.display = 'inline';
+        }
+      }
 
       async function init() {}
 
