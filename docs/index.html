@@ -40,6 +40,11 @@
         background: #f5f5f5;
         border-radius: 5px;
         white-space: pre-wrap;
+        display: none;
+      }
+
+      #response.visible {
+        display: block;
       }
     </style>
   </head>
@@ -59,6 +64,7 @@
 
       async function createSession() {
         status.textContent = 'Initializing model...';
+        initModel.style.display = 'none';
 
         try {
           session = await LanguageModel.create({
@@ -101,14 +107,17 @@
 
       async function sendPrompt() {
         if (!session) return;
-        const prompt = document.getElementById('prompt').value.trim();
+        const promptEl = document.getElementById('prompt');
+        const prompt = promptEl.value.trim();
         if (!prompt) return;
+        promptEl.disabled = true;
 
         const sendBtn = document.getElementById('send');
         sendBtn.disabled = true;
 
         const response = document.getElementById('response');
         response.textContent = 'Processing...';
+        response.classList.add('visible');
 
         try {
           // prompt (non-streaming)
@@ -122,6 +131,7 @@
         } catch (e) {
           response.textContent = `${e.message}`;
         } finally {
+          promptEl.disabled = false;
           sendBtn.disabled = false;
         }
       }
