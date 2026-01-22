@@ -115,6 +115,9 @@
           // response.textContent = result;
 
           // promptStreaming
+          const stream = session.promptStreaming(prompt);
+          response.textContent = '';
+          for await (const chunk of stream) response.textContent += chunk;
         } catch (e) {
           response.textContent = `${e.message}`;
         } finally {
