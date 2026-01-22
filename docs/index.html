@@ -95,6 +95,25 @@
         }
       }
 
+      document.getElementById('send').onclick = async () => {
+        if (!session) return;
+        const prompt = document.getElementById('prompt').value;
+        const response = document.getElementById('response');
+        const sendBtn = document.getElementById('send');
+
+        sendBtn.disabled = true;
+        response.textContent = 'Processing...';
+
+        try {
+          const result = await session.prompt(prompt);
+          response.textContent = result;
+        } catch (e) {
+          response.textContent = `${e.message}`;
+        } finally {
+          sendBtn.disabled = false;
+        }
+      };
+
       init();
     </script>
   </body>
