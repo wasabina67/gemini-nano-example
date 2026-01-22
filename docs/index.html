@@ -58,6 +58,7 @@
       <div id="response"></div>
     </div>
     <script>
+      const lang = 'ja'; // 'en' or 'ja'
       const status = document.getElementById('status');
       const initModel = document.getElementById('init-model');
       let session = null;
@@ -68,8 +69,8 @@
 
         try {
           session = await LanguageModel.create({
-            expectedInputs: [{ type: 'text', languages: ['en'] }],
-            expectedOutputs: [{ type: 'text', languages: ['en'] }],
+            expectedInputs: [{ type: 'text', languages: [lang] }],
+            expectedOutputs: [{ type: 'text', languages: [lang] }],
             monitor(m) {
               m.addEventListener('downloadprogress', (e) => {
                 status.textContent = `Downloading now: ${Math.round(e.loaded * 100)}%`;
@@ -86,8 +87,8 @@
       async function init() {
         try {
           const availability = await LanguageModel.availability({
-            expectedInputs: [{ type: 'text', languages: ['en'] }],
-            expectedOutputs: [{ type: 'text', languages: ['en'] }],
+            expectedInputs: [{ type: 'text', languages: [lang] }],
+            expectedOutputs: [{ type: 'text', languages: [lang] }],
           });
 
           if (availability === 'unavailable') {
